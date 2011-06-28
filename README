@@ -1,0 +1,9 @@
+07jul17 - dcb - @Boolardy setting up. Changed PC clock to run
+ on London time. This changes UTC/LST in <statgps>. Not sure
+ why as I would think that UTC comes from gps and is not dependent
+ on PC clock....in fact sets PC clock. Ah..but setting PC, under
+ root, to London time gives BTC, not UTC. They differ by an hour.
+
+ Further..PC time in top bar is 10:13 AM BST; UTC in UTC/LST of
+ <statgps> reads 9:13, but Thunderbolt GPS Date/Time reads
+ 8:14! This is, I think, because Ismael has +1h in his code.
