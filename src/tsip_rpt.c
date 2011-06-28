@@ -1158,35 +1158,29 @@ if (rpt_0x8FAB (rpt, &subpacket_id, &time_of_week, &week_number, &UTC_offset, &t
 /* -- Fill the shared memory segment GPS -- */
 
 /* -- this is where we should set the computer clock to GPS one -- */
+
 tm2set.tm_sec=seconds; tm2set.tm_min=minutes; tm2set.tm_hour=hours;
 tm2set.tm_mday=day_of_month; tm2set.tm_mon=month-1; tm2set.tm_year=year-1900;
 tm2set.tm_isdst=0;
-/* -- +3600 is because mktime does the conversion within CET (without DST) -- */
-timegps=mktime(&tm2set)-UTC_offset +3600;
+timegps=timegm(&tm2set)-UTC_offset;
 gettimeofday(&time2set,NULL);
-// dt=gmtime(&time2set.tv_sec); timehost=mktime(dt);
-// sprintf(gpslinelog,"dt: %04d %02d %02d - %02d:%02d:%02d isdst=%d",dt->tm_year,dt->tm_mon,dt->tm_mday,dt->tm_hour,dt->tm_min,dt->tm_sec,dt->tm_isdst); gpslog(gpslinelog);
 timehost=time2set.tv_sec;
-// sprintf(gpslinelog,"timegm : %ld %ld  timeCPU.tv_sec=%ld",timegps,timehost,time2set.tv_sec); gpslog(gpslinelog);
-// sprintf(gpslinelog,"diff= %ld",timegps-timehost); gpslog(gpslinelog);
+//xprintf("GPS time: %i seconds.", timegps);
+//xprintf("CPU time: %i seconds.",timehost);
 diff=abs(timegps-timehost);
 diffd=fabsf( ((double)timegps+0.020) - (timehost+time2set.tv_usec/1.0e6) );
 shmgps->diffCPU_GPS=diffd;
 
-xprintf ("THUNDERBOLT DATE/TIME %02d:%02d:%02d %5d/%d/%hu  UTC offset=%hu", hours, minutes, seconds, month,
-  day_of_month, year, UTC_offset);
-sprintf(gpslinelog,"ThunderBolt GPS Date/Time %5d/%d/%hu  %02d:%02d:%02d  UTC_offset=%hu",
-  month, day_of_month, year, hours, minutes, seconds, UTC_offset);
+xprintf ("THUNDERBOLT DATE/TIME %02d:%02d:%02d %5d/%d/%hu  (GPS UTC offset=%hu s) \n", hours, minutes, seconds, month, day_of_month, year, UTC_offset);
+sprintf(gpslinelog,"ThunderBolt GPS Date/Time %5d/%d/%hu  %02d:%02d:%02d  UTC_offset=%hu s", month, day_of_month, year, hours, minutes, seconds, UTC_offset);
+sprintf(gpslinelog,"diff_CPU_GPS= %.6lf sec",diffd); gpslog(gpslinelog);
 if(strcmp(shmgps->s0x8FAB_3,gpslinelog) != 0) {
   strcpy(shmgps->s0x8FAB_3,gpslinelog);
   gpslog(gpslinelog);
 }
-sprintf(gpslinelog,"diff_CPU_GPS= %.6lf sec",diffd); gpslog(gpslinelog);
 
-xprintf ("time of week: %lu  week number: %hu  UTC offset %hu", time_of_week,
-  week_number, UTC_offset); show_crlf ();
-sprintf(shmgps->s0x8FAB_1,"time of week: %lu  week number: %hu  UTC offset %hu",
-  time_of_week, week_number, UTC_offset); 
+//xprintf ("time of week: %lu  week number: %hu  UTC offset %hu", time_of_week, week_number, UTC_offset); show_crlf ();
+//sprintf(shmgps->s0x8FAB_1,"time of week: %lu  week number: %hu  UTC offset %hu",  time_of_week, week_number, UTC_offset); 
 
 xprintf ("Flags: ");
 xprintf ((timing_flag & 0x01)?  " UTC time,": " GPS time,");
@@ -1216,8 +1210,6 @@ if( strstr(gpslinelog,"Time set") && strstr(gpslinelog,"Have UTC info") && strst
  }
 }
 
-xprintf ("THUNDERBOLT DATE/TIME %02d:%02d:%02d %5d/%d/%hu  UTC offset=%hu", hours, minutes, seconds, month,
-  day_of_month, year, UTC_offset);
 sprintf(gpslinelog,"ThunderBolt GPS Date/Time %5d/%d/%hu  %02d:%02d:%02d  UTC_offset=%hu",
   month, day_of_month, year, hours, minutes, seconds, UTC_offset);
 if(strcmp(shmgps->s0x8FAB_3,gpslinelog) != 0) {
@@ -1502,7 +1494,7 @@ static void rpt_8FAC (TSIPPKT *rpt)
    longitude *= R2D;
    xprintf ("Latitude: %.3f  Longitude: %.3f  Altitude: %.3f", latitude,
     			longitude, altitude);
-   sprintf(gpslinelog,"Latitude: %.6f  Longitude: %.6f  Altitude: %.3f", latitude, longitude, altitude);
+   sprintf(gpslinelog,"Latitude: %.11f  Longitude: %.11f  Altitude: %.11f", latitude, longitude, altitude);
    if(strcmp(shmgps->s0x8FAC_11,gpslinelog) != 0) {
      strcpy(shmgps->s0x8FAC_11,gpslinelog); gpslog(gpslinelog);
    }

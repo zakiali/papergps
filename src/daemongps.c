@@ -30,8 +30,8 @@ static TSIPPKT rpt;
 
 pidp=getpid();
 strcpy(prgid,argv[0]);
-//sprintf(fileserial,"/dev/ttyUSB0");
 sprintf(fileserial,"/dev/ttyS0");
+
 /* -- Open and init the serial line -- */
 if((fdserial=open(fileserial,O_RDWR,0)) == -1){
   perror("*** erreur open serial ***");

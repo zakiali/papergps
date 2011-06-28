@@ -1,3 +1,11 @@
+2009 Oct 23: JRM: @ KAT configuring PAPER3
+ Updated code to use non-obsoleted system calls.
+ Support for non-UTC timezones where local clock is set to UTC (as most Linux systems are).
+ Removed hard-coded 1hr daylight correction.
+ Redirected makefile's hard-coded mv command.
+
+ Code still needs some work to fix-up hard-coded locations of std *nix programs (awk) on different platforms.
+
 07jul17 - dcb - @Boolardy setting up. Changed PC clock to run
  on London time. This changes UTC/LST in <statgps>. Not sure
  why as I would think that UTC comes from gps and is not dependent
@@ -7,3 +15,4 @@
  Further..PC time in top bar is 10:13 AM BST; UTC in UTC/LST of
  <statgps> reads 9:13, but Thunderbolt GPS Date/Time reads
  8:14! This is, I think, because Ismael has +1h in his code.
+

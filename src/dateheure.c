@@ -53,20 +53,25 @@ return(d);
 /* -- provide date/hour as formated (suitable to men) and double         -- */
 /* ------------------------------------------------------------------------ */
 double dateheureimpr(char *dateymd, char *heurehms, char *tuhms)
-{int status,tsh,tsm,tss;
-struct timeval tv; struct tm *dt;
+{int status,timezone;
+struct timeval tv; 
+struct tm dt, tudt;
+time_t utc_time,local_time;
 static char *month[12]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};
 double d;
 
 status=gettimeofday(&tv,NULL);
 if(status != 0)return(status);
-dt=gmtime(&tv.tv_sec);
-sprintf(dateymd,"%s %02d, %04d",month[dt->tm_mon],dt->tm_mday,dt->tm_year+1900);
-sprintf(heurehms,"%02d:%02d:%02d",dt->tm_hour,dt->tm_min,dt->tm_sec);
+
+gmtime_r(&tv.tv_sec,&dt);
+localtime_r(&tv.tv_sec,&tudt);
+
+sprintf(dateymd,"%s %02d, %04d",month[dt.tm_mon],dt.tm_mday,dt.tm_year+1900);
+sprintf(heurehms,"%02d:%02d:%02d",dt.tm_hour,dt.tm_min,dt.tm_sec);
+sprintf(tuhms,"%02d:%02d:%02d",tudt.tm_hour,tudt.tm_min,tudt.tm_sec);
+
 status=(int)tv.tv_sec;
 d=(double)status+(double)tv.tv_usec*1.0e-6;
-tuts(dt->tm_year+1900,dt->tm_mon+1,dt->tm_mday,dt->tm_hour,dt->tm_min,dt->tm_sec,&tsh,&tsm,&tss);
-sprintf(tuhms,"%02d:%02d:%02d",tsh,tsm,tss);
 #if DEBUG
 printf("dateheureimpr>  date=<%s>  heure=<%s>\n",dateymd,heurehms);
 #endif

@@ -49,9 +49,9 @@ int initshrmemgps(char name[])
 
 verbose=0;
 /* -- Creation of the key to define the shared memory segment -- */
-if((cle=ftok("/bin/awk",'e')) < 0){
+if((cle=ftok("/usr/bin/awk",'e')) < 0){
   perror("*** error creation cle ftok ***");
-  printf("initshrmemgps> Error ftok with (/bin/awk e)\n");
+  printf("initshrmemgps> Error ftok with (/usr/bin/awk e)\n");
   return(-1);
 } else {
   if(verbose) printf("initshrmemgps> Creation of key with ftok OK\n");

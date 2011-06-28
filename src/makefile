@@ -1,4 +1,4 @@
-BINDIR = /home/obs/bin
+BINDIR = ../bin/
 OPT=    -O -Wall
 LIBPGPLOT=      -L/usr/local/pgplot -lcpgplot -lpgplot -L/usr/X11R6/lib -lX11
 
