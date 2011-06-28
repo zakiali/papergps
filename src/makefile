@@ -13,7 +13,7 @@ install: all
 
 install-etc: install
 	cp ../etc/init.d/daemongps /etc/init.d/.
-	ln -s ../init.d/daemongps /etc/rc2.d/S99daemongps
+	ln -sf ../init.d/daemongps /etc/rc2.d/S99daemongps
 
 # ---------------------------------------------------------------------------------------------------
 # to show GPS STATUS directly fom shared memory
