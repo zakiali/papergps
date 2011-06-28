@@ -1,0 +1,8 @@
+To build, cd into src and run "make".
+
+To install, cd into src and run "make install" (probably need to be root).
+
+To install init scripts such that Linux will start daemongps on bootup, cd into
+src and run "make install-etc" (probably need to be root).
+
+Other possibly useful makefile targets include "send2gps" and "clean".
