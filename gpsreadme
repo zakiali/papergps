@@ -1,0 +1,1 @@
+note that there should be a file in gps/etc/rc2.d called S99daemongps which is a simlink to gps/etc/init.d/daemongps.
